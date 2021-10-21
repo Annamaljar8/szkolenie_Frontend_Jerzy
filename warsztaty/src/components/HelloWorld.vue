@@ -30,10 +30,33 @@
     },
 
     name: 'HelloWorld',
+    computed: {
+      ...mapGetters({
+        getKeycloakToken: 'getKeycloakToken'
+      })
+    },
+    methods: {
+      ...mapMutations({
+        setKeycloakToken: 'SET_KEYCLOAK_TOKEN'
+        }),
+    },
+
 
     data: () => ({
     
     }),
+    created(){
+      let keycloakToken = sessionStorage['AccessTokenJWT'] || '';
+      this.setKeycloakToken(keycloakToken);
+      
+      setInterval(() => {
+        let keycloakToken = sessionStorage['AccessTokenJWT'] || '';
+        let currentToken = this.getKeycloakToken;
+        if (keycloakToken !== currentToken) {
+          this.setKeycloakToken(keycloakToken);
+        }
+      }, 1000);
+    },
   }
 </script>
 
